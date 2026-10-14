@@ -1,0 +1,185 @@
+{
+  "$id": "https://specgate.dev/schemas/pack.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "applies_to": {
+      "additionalProperties": false,
+      "properties": {
+        "frameworks": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "languages": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "languages",
+        "frameworks"
+      ],
+      "type": "object"
+    },
+    "checks": {
+      "default": [],
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "config": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "engine": {
+            "enum": [
+              "dependency-cruiser",
+              "eslint",
+              "semgrep",
+              "import-linter",
+              "archunit",
+              "custom"
+            ],
+            "type": "string"
+          },
+          "fix_hint": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "gate": {
+            "enum": [
+              "secrets",
+              "lint",
+              "tests",
+              "coverage",
+              "architecture",
+              "dependencies",
+              "spec"
+            ],
+            "type": "string"
+          },
+          "id": {
+            "pattern": "^[A-Z][A-Z0-9]*-\\d+$",
+            "type": "string"
+          },
+          "message": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "gate",
+          "engine",
+          "config",
+          "message",
+          "fix_hint"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "guidance": {
+      "default": [],
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "body": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "id": {
+            "pattern": "^[A-Z][A-Z0-9]*-\\d+$",
+            "type": "string"
+          },
+          "scope": {
+            "additionalProperties": false,
+            "default": {
+              "globs": [],
+              "tags": []
+            },
+            "properties": {
+              "globs": {
+                "default": [],
+                "items": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "tags": {
+                "default": [],
+                "items": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "globs",
+              "tags"
+            ],
+            "type": "object"
+          },
+          "severity": {
+            "default": "warning",
+            "enum": [
+              "error",
+              "warning",
+              "info"
+            ],
+            "type": "string"
+          },
+          "title": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "body",
+          "scope",
+          "severity"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "license": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "name": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "source": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "version": {
+      "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "version",
+    "license",
+    "source",
+    "applies_to",
+    "guidance",
+    "checks"
+  ],
+  "title": "PackManifest",
+  "type": "object"
+}

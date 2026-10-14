@@ -1,0 +1,204 @@
+{
+  "$id": "https://specgate.dev/schemas/stack-profile.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "architectureHints": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "default": 0,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "values": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "values",
+        "confidence"
+      ],
+      "type": "object"
+    },
+    "ciProvider": {
+      "additionalProperties": false,
+      "default": {
+        "confidence": 0,
+        "value": null
+      },
+      "properties": {
+        "confidence": {
+          "default": 0,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "value",
+        "confidence"
+      ],
+      "type": "object"
+    },
+    "detectedAt": {
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T",
+      "type": "string"
+    },
+    "frameworks": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "default": 0,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "values": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "values",
+        "confidence"
+      ],
+      "type": "object"
+    },
+    "languages": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "default": 0,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "values": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "values",
+        "confidence"
+      ],
+      "type": "object"
+    },
+    "linters": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "default": 0,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "values": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "values",
+        "confidence"
+      ],
+      "type": "object"
+    },
+    "packageManagers": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "default": 0,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "values": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "values",
+        "confidence"
+      ],
+      "type": "object"
+    },
+    "rootPath": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "testRunners": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "default": 0,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "values": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "values",
+        "confidence"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "languages",
+    "frameworks",
+    "packageManagers",
+    "testRunners",
+    "linters",
+    "architectureHints",
+    "ciProvider",
+    "rootPath",
+    "detectedAt"
+  ],
+  "title": "StackProfile",
+  "type": "object"
+}

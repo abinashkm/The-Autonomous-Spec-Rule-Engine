@@ -1,0 +1,24 @@
+# SpecGate CODEOWNERS
+#
+# run.md §16 and ADR-013 (§13.3) require that changes to the design, schemas,
+# and tamper-sensitive paths get an explicit review. This file is the
+# repo-level backstop; the `tamper` gate (M5.C) is the agent-session backstop.
+#
+# Replace the @owner placeholder below with the real owner handle(s) when the
+# project moves out of pre-development.
+
+# Design + plan — the sources of truth for every change.
+/run.md                           @owner
+/PLAN.md                          @owner
+
+# Schemas: the source-of-truth zod definitions and generated JSON Schema.
+/packages/core/src/schemas/       @owner
+/schemas/                         @owner
+
+# Tamper-sensitive runtime config paths (users' repos — mirrored here for
+# dogfooding from M3 onward).
+/.specgate/                       @owner
+
+# CI/CD — avoid unreviewed changes to the non-bypassable backstop (run.md §9.5).
+/.github/workflows/               @owner
+/.github/CODEOWNERS               @owner

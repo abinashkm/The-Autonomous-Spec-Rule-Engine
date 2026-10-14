@@ -1,0 +1,24 @@
+{
+  "name": "@specgate/plugin-claude-code",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SpecGate plugin for Claude Code: slash commands, hooks, MCP server registration.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "files": [
+    "dist",
+    "plugin.json",
+    "commands",
+    "hooks",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@specgate/core": "workspace:*"
+  }
+}

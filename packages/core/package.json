@@ -1,0 +1,29 @@
+{
+  "name": "@specgate/core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SpecGate core library — all logic (stack detect, spec engine, rule engine, gate runner, trace, drift, fix-loop, report).",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
+  }
+}

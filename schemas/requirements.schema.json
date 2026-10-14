@@ -1,0 +1,135 @@
+{
+  "$id": "https://specgate.dev/schemas/requirements.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "context": {
+      "default": "",
+      "type": "string"
+    },
+    "frontmatter": {
+      "additionalProperties": false,
+      "properties": {
+        "created": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^SPEC-\\d{3}$",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "approved",
+            "implemented"
+          ],
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "status",
+        "created"
+      ],
+      "type": "object"
+    },
+    "nonFunctional": {
+      "default": [],
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "pattern": "^NFR-\\d{3}$",
+            "type": "string"
+          },
+          "text": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "outOfScope": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "requirements": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "acceptanceCriteria": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "deprecated": {
+                  "default": false,
+                  "type": "boolean"
+                },
+                "id": {
+                  "pattern": "^AC-\\d{3}\\.\\d+$",
+                  "type": "string"
+                },
+                "text": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "text",
+                "deprecated"
+              ],
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "deprecated": {
+            "default": false,
+            "type": "boolean"
+          },
+          "id": {
+            "pattern": "^REQ-\\d{3}$",
+            "type": "string"
+          },
+          "title": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "acceptanceCriteria",
+          "deprecated"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "frontmatter",
+    "context",
+    "requirements",
+    "nonFunctional",
+    "outOfScope"
+  ],
+  "title": "ParsedRequirements",
+  "type": "object"
+}

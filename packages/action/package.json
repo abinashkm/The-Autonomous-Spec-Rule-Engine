@@ -1,0 +1,24 @@
+{
+  "name": "@specgate/action",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SpecGate GitHub Action wrapper.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "action.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@specgate/core": "workspace:*"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@specgate/cli",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SpecGate CLI (specgate / sg).",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "specgate": "./dist/index.js",
+    "sg": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run --passWithNoTests",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.8.1",
+    "@specgate/core": "workspace:*",
+    "commander": "^15.0.0"
+  }
+}

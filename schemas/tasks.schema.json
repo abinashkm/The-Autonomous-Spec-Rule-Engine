@@ -1,0 +1,55 @@
+{
+  "$id": "https://specgate.dev/schemas/tasks.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "tasks": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "done": {
+            "default": false,
+            "type": "boolean"
+          },
+          "id": {
+            "pattern": "^T-\\d{3}$",
+            "type": "string"
+          },
+          "implements": {
+            "items": {
+              "pattern": "^AC-\\d{3}\\.\\d+$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "tags": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "title": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "done",
+          "implements",
+          "tags"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "tasks"
+  ],
+  "title": "ParsedTasks",
+  "type": "object"
+}

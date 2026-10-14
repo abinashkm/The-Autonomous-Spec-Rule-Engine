@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+.turbo/
+schemas/vendored/
+pnpm-lock.yaml
+LICENSE
+*.log
+run.md
+PLAN.md

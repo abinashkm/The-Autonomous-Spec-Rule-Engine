@@ -1,0 +1,39 @@
+{
+  "name": "specgate-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "SpecGate — spec-before-code, rules-while-coding, gates-before-merge for AI coding agents.",
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm -r --filter \"@specgate/*\" run build",
+    "test": "pnpm -r --filter \"@specgate/*\" run test",
+    "lint": "eslint .",
+    "typecheck": "pnpm -r --filter \"@specgate/*\" exec tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "schemas": "tsx scripts/gen-schemas.ts",
+    "clean": "pnpm -r exec rm -rf dist .turbo *.tsbuildinfo"
+  },
+  "workspaces": [
+    "packages/*",
+    "packs/*"
+  ],
+  "devDependencies": {
+    "@types/node": "20",
+    "@typescript-eslint/eslint-plugin": "^8.71.2",
+    "@typescript-eslint/parser": "^8.71.2",
+    "eslint": "9",
+    "prettier": "^3.9.10",
+    "tsup": "^9.0.0",
+    "tsx": "^4.23.15",
+    "typescript": "5",
+    "typescript-eslint": "^8.71.2",
+    "vitest": "^5.0.4",
+    "zod": "^4.6.7"
+  }
+}

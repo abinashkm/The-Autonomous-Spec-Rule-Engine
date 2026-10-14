@@ -1,0 +1,27 @@
+node_modules/
+dist/
+.turbo/
+coverage/
+.specgate/reports/
+.specgate/state.json
+.DS_Store
+*.log
+
+# Editor / IDE
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# OS
+Thumbs.db
+desktop.ini
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Build caches
+*.tsbuildinfo
+.cache/

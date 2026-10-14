@@ -1,0 +1,148 @@
+{
+  "$id": "https://specgate.dev/schemas/gate-result.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "properties": {
+    "blocking": {
+      "type": "boolean"
+    },
+    "duration_ms": {
+      "maximum": 9007199254740991,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "error_message": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "findings": {
+      "default": [],
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "auto_fixable": {
+            "default": false,
+            "type": "boolean"
+          },
+          "file": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "fix_hint": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "line": {
+            "anyOf": [
+              {
+                "maximum": 9007199254740991,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "message": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "rule_ref": {
+            "default": null,
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "severity": {
+            "enum": [
+              "error",
+              "warning",
+              "info"
+            ],
+            "type": "string"
+          },
+          "spec_ref": {
+            "default": null,
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "severity",
+          "file",
+          "line",
+          "message",
+          "fix_hint",
+          "auto_fixable",
+          "rule_ref",
+          "spec_ref"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "gate": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "skipped_reason": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "pass",
+        "fail",
+        "warn",
+        "skipped",
+        "error"
+      ],
+      "type": "string"
+    },
+    "tool": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "gate",
+    "status",
+    "blocking",
+    "duration_ms",
+    "findings",
+    "tool"
+  ],
+  "title": "GateResult",
+  "type": "object"
+}
