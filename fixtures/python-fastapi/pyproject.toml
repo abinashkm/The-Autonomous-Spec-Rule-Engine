@@ -1,0 +1,18 @@
+[project]
+name = "fixture-python-fastapi"
+version = "0.0.0"
+description = "SpecGate fixture: FastAPI + pytest app. Used by the stack detector and gate-runner tests."
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.29",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

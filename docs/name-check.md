@@ -6,21 +6,22 @@
 **Current working name:** `SpecGate` (constant `PRODUCT_NAME` lives in [packages/core/src/constants.ts](../packages/core/src/constants.ts)).
 
 **Fallback order** (same change set, under an hour per the plan):
+
 1. `specrail`
 2. `railspec`
 3. `specward`
 
 ## Channels
 
-| Channel | Status | Checked on | Checked by | Notes |
-|---|---|---|---|---|
-| npm — `specgate` | TBD | — | — | `npm view specgate` or https://www.npmjs.com/package/specgate |
-| npm — `@specgate/*` scope | TBD | — | — | `npm view @specgate/cli` |
-| GitHub org `specgate` | TBD | — | — | https://github.com/specgate |
-| Domain `specgate.dev` | TBD | — | — | Any WHOIS / registrar |
-| Domain `specgate.io` | TBD | — | — | Any WHOIS / registrar |
-| Domain `specgate.sh` | TBD | — | — | Any WHOIS / registrar |
-| Trademark (word-mark search) | TBD | — | — | USPTO TESS (https://tmsearch.uspto.gov/) + EUIPO eSearch (https://euipo.europa.eu/eSearch/) |
+| Channel                      | Status | Checked on | Checked by | Notes                                                                                       |
+| ---------------------------- | ------ | ---------- | ---------- | ------------------------------------------------------------------------------------------- |
+| npm — `specgate`             | TBD    | —          | —          | `npm view specgate` or https://www.npmjs.com/package/specgate                               |
+| npm — `@specgate/*` scope    | TBD    | —          | —          | `npm view @specgate/cli`                                                                    |
+| GitHub org `specgate`        | TBD    | —          | —          | https://github.com/specgate                                                                 |
+| Domain `specgate.dev`        | TBD    | —          | —          | Any WHOIS / registrar                                                                       |
+| Domain `specgate.io`         | TBD    | —          | —          | Any WHOIS / registrar                                                                       |
+| Domain `specgate.sh`         | TBD    | —          | —          | Any WHOIS / registrar                                                                       |
+| Trademark (word-mark search) | TBD    | —          | —          | USPTO TESS (https://tmsearch.uspto.gov/) + EUIPO eSearch (https://euipo.europa.eu/eSearch/) |
 
 ## How to run the check
 

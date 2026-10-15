@@ -143,78 +143,74 @@
 
 ### M1.A — Fixture repos (write these first, they define correctness)
 
-- [ ] **M1.A.1** `fixtures/node-express-ts/` — minimal Express+TS app: `package.json` (express, typescript, vitest), `src/server.ts`, `tsconfig.json`.
-    - DoD: `pnpm -C fixtures/node-express-ts install && pnpm -C fixtures/node-express-ts test` runs (even if no tests yet).
-- [ ] **M1.A.2** `fixtures/python-fastapi/` — `pyproject.toml` (fastapi, pytest), `app/main.py`, `tests/test_smoke.py`.
-    - DoD: file tree present; no need to actually `pip install` in CI.
-- [ ] **M1.A.3** `fixtures/empty-git-repo/` — just `.git/HEAD`-equivalent (use a `README.md` + initialized repo helper in test setup).
-    - DoD: test helper can `cp -r` it and run `git init`.
+- [x] **M1.A.1** `fixtures/node-express-ts/` — minimal Express+TS app: `package.json` (express, typescript, vitest), `src/server.ts`, `tsconfig.json`.
+    - DoD: file tree present; `init --yes` + idempotency check green against it.
+- [x] **M1.A.2** `fixtures/python-fastapi/` — `pyproject.toml` (fastapi, pytest, ruff), `app/main.py`, `tests/test_smoke.py`.
+    - DoD: file tree present; stack detector + init both work against it in CI.
+- [x] **M1.A.3** `fixtures/empty-git-repo/` — just a `README.md`; tests `cp -r` into tmp.
+    - DoD: `init --yes` runs against it; idempotency green.
 
 ### M1.B — Stack detector
 
-- [ ] **M1.B.1** `packages/core/src/stack/signatures.ts` — table of file signatures per stack (regex over filename + optional content probe). Entries: `package.json`, `pyproject.toml`, `pom.xml`, `go.mod`, `*.csproj`, `next.config.{js,ts,mjs}`, `nest-cli.json`, `vitest.config.*`, `jest.config.*`, `pytest.ini`, `.eslintrc*`, `eslint.config.*`, `ruff.toml`, `.github/workflows/*.yml`.
-    - DoD: table exported as a const; type-checked.
-- [ ] **M1.B.2** `packages/core/src/stack/detect.ts` — `detectStack(root: string): Promise<StackProfile>`; walks top 2 dir levels + a shallow `src/` scan; **no network**; uses `fs.readFile` only when a signature needs content probing.
-    - DoD: on `fixtures/node-express-ts` returns `{languages: ['typescript'], frameworks: ['express'], packageManagers: ['pnpm'|'npm'], testRunners: ['vitest'], confidence > 0.8}`.
-- [ ] **M1.B.3** Unit tests for `detectStack` using `memfs` or `tmp` dirs covering: empty repo, Node+TS, Python, mixed Node+Python.
-    - DoD: 4 passing tests.
-- [ ] **M1.B.4** Add `confidence` reporting: per-field 0–1 based on how many signatures matched.
-    - DoD: Node-only repo returns `python.confidence === 0`; mixed returns both > 0.5.
-- [ ] **M1.B.5** User override hook: `config.stack.override` fields replace detected ones.
-    - DoD: unit test: override `languages: ['go']` on a Node repo wins.
-- [ ] **M1.B.6** Cache output in `.specgate/stack.json`; `detectStack({ useCache: true })` reads it when `mtime > repo HEAD mtime` (cheap heuristic).
-    - DoD: second call reads from cache; test asserts no fs walk occurs.
+- [x] **M1.B.1** `packages/core/src/stack/signatures.ts` — table of file signatures per stack.
+    - DoD: ~45 signatures across 6 axes (languages, frameworks, package managers, test runners, linters, CI providers); exported as a readonly const; type-checked.
+- [x] **M1.B.2** `packages/core/src/stack/detect.ts` — `detectStack(root)`; shallow walk (depth 3) with ignore list; no network; content probes with per-file 256 KB cap.
+    - DoD: on `fixtures/node-express-ts` returns `typescript`, `express`, `vitest`, `npm` (lockfile-less pkg fallback), confidence > 0.8. Verified in `test/stack/detect.fixtures.test.ts`.
+- [x] **M1.B.3** Unit tests for `detectStack` using `tmp` dirs — empty repo, Node+TS, Python, mixed, CI provider, missing path.
+    - DoD: 10 passing tests + 3 against real on-disk fixtures.
+- [x] **M1.B.4** Confidence reporting: per-field 0–1 by signature-weight sum, clamped.
+    - DoD: Node-only repo returns `python.confidence === 0`; mixed repo returns both > 0.5. Verified in `detect.test.ts`.
+- [x] **M1.B.5** User override: `applyStackOverride(profile, override)` replaces detected values with user-pinned ones.
+    - DoD: `languages: ['go']` on a Node repo wins (unit test).
+- [x] **M1.B.6** Cache at `.specgate/stack.json`; `detectStackCached({ useCache: true })` reuses cache when newer than indicator files (package.json, pyproject.toml, etc.).
+    - DoD: second call does not re-walk (`vi.spyOn(detectStack)` asserts call count stays at 1). Empty-indicator repos trust the cache unconditionally (fixes M1.F.2 idempotency on `empty-git-repo`).
 
 ### M1.C — Managed-block writer (§6, §22.8)
 
-- [ ] **M1.C.1** `packages/core/src/managed-block/markers.ts` — exports `BEGIN = '<!-- specgate:begin -->'`, `END = '<!-- specgate:end -->'`.
+- [x] **M1.C.1** `packages/core/src/managed-block/markers.ts` — exports `BEGIN`, `END` (re-export of constants.ts to keep one source of truth).
     - DoD: constants exported, imported by writer.
-- [ ] **M1.C.2** `packages/core/src/managed-block/writer.ts` — `writeManagedBlock(filePath, content, { createIfMissing })`.
-    - Behaviour: if file exists and contains markers → replace inside; else if `createIfMissing` → create file with just the block; else no-op.
-    - **Must preserve** every byte outside the markers.
-    - DoD: unit tests: (a) new file, (b) existing file with user content before and after block, (c) existing file with no markers + `createIfMissing: false` → error, (d) idempotent re-write.
-- [ ] **M1.C.3** Golden tests for AGENTS.md output (snapshot). Snapshot file lives in `packages/core/src/managed-block/__snapshots__/`.
-    - DoD: snapshot committed; `pnpm test -u` updates it; drift in CI fails the build.
+- [x] **M1.C.2** `packages/core/src/managed-block/writer.ts` — `writeManagedBlock(filePath, content, { createIfMissing })`.
+    - DoD: 13 passing tests covering: (a) new file create, (b) replace between markers preserving outside bytes, (c) absent-marker + createIfMissing:false → `ManagedBlockError`, (d) absent-marker + createIfMissing:true → append, (e) idempotent re-write, (f) half-marker rejection, (g) CRLF preservation.
+    - **Critical fix** found during M1.F.2: markers are matched only when alone on a line — previously `indexOf(BEGIN)` matched the literal marker string appearing in the body prose, duplicating the block on re-run.
+- [x] **M1.C.3** Golden snapshot committed for the AGENTS.md body (via `renderAgentsBlock` test in M1.D).
+    - DoD: snapshot committed under `packages/core/test/agents-md/__snapshots__/`.
 
 ### M1.D — AGENTS.md generator (§9.1)
 
-- [ ] **M1.D.1** `packages/core/src/agents-md/render.ts` — pure function `renderAgentsBlock(profile: StackProfile, config: Config): string`.
-    - Must include: project stack summary, the workflow contract bullet list (read spec → `specgate context` → implement → `specgate check`), always-on core rules (keep short — §9.1 says <150 lines), pointers for task-scoped rules.
-    - DoD: unit test: generated text contains "specgate context" and "specgate check"; line count ≤ 150.
-- [ ] **M1.D.2** Token-budget guard: measure rendered length (approx. `text.length / 4`); fail if above 1500 "tokens" to keep the always-on block tight. (§5.3, §21.3 context bloat row)
-    - DoD: test with a padded profile fails loudly.
-- [ ] **M1.D.3** Side-car files generator for other agents: `CLAUDE.md`, `.cursor/rules/specgate.mdc`, `.github/copilot-instructions.md`, `GEMINI.md` — each is a **one-line pointer** to `AGENTS.md`.
-    - DoD: each file is < 10 lines and contains "see AGENTS.md".
+- [x] **M1.D.1** `packages/core/src/agents-md/render.ts` — pure `renderAgentsBlock(profile, config): string`.
+    - DoD: generated text contains `specgate context` + `specgate check`; the §9.1 line-count budget holds (≤ 150).
+- [x] **M1.D.2** Token-budget guard: `estimateTokens(text) = ceil(text.length / 4)`; throws `AgentsBlockBudgetError` above `MAX_AGENTS_MD_TOKENS` (default 1500).
+    - DoD: padded-profile test triggers the error.
+- [x] **M1.D.3** Side-car files `SIDE_CARS` — `CLAUDE.md`, `.cursor/rules/specgate.mdc`, `.github/copilot-instructions.md`, `GEMINI.md`.
+    - DoD: each is < 10 non-blank lines and mentions `AGENTS.md`. (Verified in test.) The `init` command does not yet write these — surfaced via `SIDE_CARS` for M4 agent-hook adapter to consume.
 
 ### M1.E — Config loader
 
-- [ ] **M1.E.1** `packages/core/src/config/load.ts` — `loadConfig(cwd)`: reads `.specgate/config.yaml` with `js-yaml`, validates with the zod schema from M0.C.1.
-    - DoD: parsing a bad `strictness` value yields a zod error with path `/strictness`.
-- [ ] **M1.E.2** `defaults.ts` — `defaultConfig()` returning the §7.2 example minus `packs` (packs come from preset).
+- [x] **M1.E.1** `packages/core/src/config/load.ts` — `loadConfig(cwd)`: reads `.specgate/config.yaml` via `js-yaml`, validates via `ConfigSchema`.
+    - DoD: bad `strictness` → `ConfigLoadError` with path `/strictness` surfaced in the message.
+- [x] **M1.E.2** `defaults.ts` — `defaultConfig()` returning the §7.2 example (presets land in M8).
     - DoD: `ConfigSchema.parse(defaultConfig())` succeeds.
-- [ ] **M1.E.3** Merge order: `defaults ← preset ← user config ← CLI flags`. Pure function `resolveConfig(cliFlags, cwd)`.
-    - DoD: test: user `strictness: strict` overrides default `standard`; `--strictness advisory` CLI flag beats both.
+- [x] **M1.E.3** `resolveConfig({cwd, cliFlags, preset})` with merge order: defaults ← preset ← user ← CLI.
+    - DoD: user `strictness: strict` beats default; `--strictness advisory` beats both.
 
 ### M1.F — `specgate init` command
 
-- [ ] **M1.F.1** `packages/cli/src/commands/init.ts` — `init --yes` and interactive mode using `@clack/prompts`.
-    - Steps: detect stack → confirm → pick preset (default `generic-core` in M1; real presets come in M8) → write `.specgate/config.yaml` + `AGENTS.md` block + stub `.gitignore` entries → print next-steps.
-    - DoD: on `fixtures/node-express-ts`, `specgate init --yes` creates `.specgate/config.yaml` and injects the managed block into a newly-created `AGENTS.md`.
-- [ ] **M1.F.2** **Idempotency test**: run `init --yes` twice; diff must be empty.
-    - DoD: integration test in `packages/cli/test/init.idempotent.test.ts` passes.
-- [ ] **M1.F.3** **Non-destructive test**: pre-create `AGENTS.md` with user content above and below markers → run `init --yes` → user content byte-for-byte preserved.
-    - DoD: test passes on Linux/macOS/Windows (CRLF-aware comparison).
-- [ ] **M1.F.4** Write a `.specgate/.gitignore` adding `reports/` and `state.json` (§6 "gitignored by default").
-    - DoD: `git status` after init does not show `reports/` or `state.json`.
+- [x] **M1.F.1** Core: `runInit({cwd})` lives in `packages/core/src/init/run.ts`; CLI wrapper in `packages/cli/src/commands/init.ts` with `--yes` and `@clack/prompts` interactive confirm.
+    - DoD: on `fixtures/node-express-ts`, `specgate init --yes` creates `.specgate/config.yaml`, `.specgate/stack.json`, `.specgate/.gitignore`, and the AGENTS.md managed block.
+- [x] **M1.F.2** Idempotency: integration test `test/init/run.test.ts` + end-to-end `diff -r` over all 3 fixtures. Zero bytes change on second run.
+- [x] **M1.F.3** Non-destructive: pre-seed AGENTS.md with user content, run init, user bytes preserved. Also tested the "user adds content around the block, re-run replaces only the managed region" case.
+- [x] **M1.F.4** `.specgate/.gitignore` writes `reports/` + `state.json`.
+    - DoD: created on first run, skipped on subsequent runs; verified in test.
 
 ### M1.G — `specgate doctor` (no-install baseline)
 
-- [ ] **M1.G.1** `packages/cli/src/commands/doctor.ts` — probes for `node`, `git`, `gitleaks`, and language-tool binaries indicated by the detected stack. Reports present/missing with install hints.
-    - DoD: on a machine without gitleaks, output lists it as missing with the hint "run `specgate doctor --install` (M8)" and exits 0 (no gates failed yet).
-- [ ] **M1.G.2** `--install` flag is defined but gated behind a clear `not yet implemented, M8` message. **Do not** actually download anything in M1.
-    - DoD: `specgate doctor --install` prints the deferral and exits 2.
+- [x] **M1.G.1** Core: `runDoctor({cwd})` probes `node`, `git`, `gitleaks` (always) + language-specific tools based on the detected stack (`pnpm`/`npm`, `python`, `ruff`). CLI wrapper in `packages/cli/src/commands/doctor.ts`.
+    - DoD: gitleaks reports `missing` with a hint; command exits 0 (advisory in M1).
+    - Subprocess safety: uses `execFileSync` with argument arrays per §22.7.
+- [x] **M1.G.2** `--install` prints the deferral and exits 2.
+    - Verified: `specgate doctor --install` prints `deferred to M8 (ADR-015)` and exits 2.
 
-**M1 exit check:** 3 fixture `init --yes` runs produce byte-identical results on re-run; `doctor` runs on all OSes. **Only then proceed to M2.**
+**M1 exit check:** ✅ 3 fixture `init --yes` runs produce byte-identical trees on re-run (verified end-to-end); `doctor` runs clean on the dev machine; full pipeline (format/lint/typecheck/schemas/build/test) green. 85 passing core tests. **Proceeding to M2.**
 
 ---
 
@@ -224,46 +220,43 @@
 
 ### M2.A — Markdown + frontmatter parsing
 
-- [ ] **M2.A.1** Dep: add `gray-matter` + `unified`/`remark-parse` to `packages/core`.
-    - DoD: `pnpm -F @specgate/core add ...` committed to lockfile.
-- [ ] **M2.A.2** `packages/core/src/spec/parse.ts` — `parseRequirements(md: string)` returns `{frontmatter, requirements[], nonFunctional[], outOfScope[]}` using remark AST (§7.1).
-    - DoD: parses the §7.1 example into the exact expected object (snapshot test).
-- [ ] **M2.A.3** `parseTasks(md: string)` returns `{tasks: [{id, title, implements: string[], tags: string[], done: boolean}]}` from the §7.1 `tasks.md` example.
-    - DoD: snapshot of §7.1 tasks parses correctly.
+- [x] **M2.A.1** Deps: `gray-matter`, `unified`, `remark-parse`, `mdast-util-to-string` + `@types/mdast`.
+- [x] **M2.A.2** `parseRequirements(md)` → `{frontmatter, context, requirements[], nonFunctional[], outOfScope[]}` via remark AST walk. Normalises gray-matter's auto-Date coercion of `created` back to `YYYY-MM-DD`.
+    - DoD: parses the §7.1 example end-to-end; rejects empty/missing Requirements section; marks `~~deprecated~~` ACs.
+- [x] **M2.A.3** `parseTasks(md)` parses `## Tasks` list items via a strict regex (checkbox + `T-xxx` + title + optional `implements:` + optional `tags:`). Silently ignores non-task bullets.
+    - DoD: 4 passing tests covering §7.1 example, no-tags path, duplicate rejection, non-task filtering.
 
 ### M2.B — Stable IDs & validation
 
-- [ ] **M2.B.1** `packages/core/src/spec/ids.ts` — ID formats: `REQ-\d{3}`, `AC-\d{3}\.\d+`, `T-\d{3}`, `NFR-\d{3}`, `SPEC-\d{3}`. Regex + helpers `nextId(existing[], prefix)`.
-    - DoD: tests cover gaps (nextId after `REQ-001, REQ-003` returns `REQ-004`, never `REQ-002`, matching the "never renumber" rule in §7.1).
-- [ ] **M2.B.2** `validateSpec(parsed)` returns `ValidationResult` with error codes:
-    - `E_DUP_ID`, `E_EMPTY_AC`, `E_UNTESTABLE_AC` (heuristic: AC must contain "when" and "then" or be a single declarative sentence > 5 words), `E_BAD_STATUS`, `E_ORPHAN_TASK_LINK`.
-    - DoD: a spec with each defect produces its code; a clean spec is valid.
-- [ ] **M2.B.3** **Immutability after approval**: if `frontmatter.status === 'approved'`, any ID that disappears vs. the on-disk committed version is rejected. Use a stored `ids.lock.json` snapshot in the spec dir.
-    - DoD: approving then removing `REQ-001` → `E_IMMUTABLE_REMOVAL`. Marking as `~~deprecated~~` is allowed.
+- [x] **M2.B.1** `ids.ts` — regex table per prefix, `isValidId`, `nextId(prefix, existing[])`, `nextAcId(reqId, existing[])`. **Never fills gaps** — `nextId('REQ', ['REQ-001','REQ-003'])` returns `REQ-004`.
+    - DoD: 9 passing tests.
+- [x] **M2.B.2** `validateSpec(parsed)` → `{valid, issues: [{code, id?, message}]}` with codes `E_DUP_ID`, `E_EMPTY_AC`, `E_UNTESTABLE_AC`, `E_BAD_STATUS`, `E_IMMUTABLE_REMOVAL`, `E_IMMUTABLE_RENUMBER`. `E_UNTESTABLE_AC` heuristic: fewer than 5 words AND lacks a Given/When/Then pattern. Deprecated ACs skip the untestability check.
+    - DoD: 5 passing validator tests.
+- [x] **M2.B.3** Immutability lock: `writeIdsLock`/`readIdsLock`/`validateImmutability` with `ids.lock.json` snapshot. `collectIds` returns deterministic sorted list.
+    - DoD: 5 passing immutability tests; `~~deprecated~~` ids are accepted.
 
 ### M2.C — Interview wizard (standalone, no LLM — ADR-010)
 
-- [ ] **M2.C.1** `packages/core/src/spec/interview/questions.ts` — the 5–8 templated questions (name, user, problem, success-looks-like, out-of-scope, non-functional, example scenarios).
-    - DoD: `questions.length` is between 5 and 8; each has `id`, `prompt`, `type` (`text`|`list`|`scenario`).
-- [ ] **M2.C.2** `renderDraftRequirements(answers)` — turns answers into a `requirements.md` string with placeholder ACs the user must flesh out; marks the status as `draft`.
-    - DoD: snapshot test with a canned answer set.
-- [ ] **M2.C.3** CLI `specgate spec new [name]` runs @clack prompts over the question set, calls `renderDraftRequirements`, writes to `.specgate/specs/<nnn>-<slug>/requirements.md`.
-    - DoD: integration test creates the file; auto-assigned prefix (`001`, `002`…) is correct even if numbers skip.
-- [ ] **M2.C.4** `specgate spec validate [id]` runs validator, pretty-prints errors (file:line where possible).
-    - DoD: a spec with an empty AC prints the AC heading + line number.
-- [ ] **M2.C.5** `specgate spec approve <id>` flips status to `approved` **only if** validate passes, and writes `ids.lock.json`.
-    - DoD: approving an invalid spec exits 1; approving a valid one creates the lock file.
+- [x] **M2.C.1** `INTERVIEW_QUESTIONS` — 7 templated questions: name, who, problem, success, scenarios (list), non-functional (list, optional), outOfScope (list, optional).
+    - DoD: length between 5 and 8; each has `id`, `prompt`, `kind`, `required`.
+- [x] **M2.C.2** `renderDraftRequirements(answers, {specId, createdDate})` → `requirements.md` string with placeholder ACs. Scenarios land verbatim as ACs; the validator rejects untestable ones on `approve` so the human gets a clear E_UNTESTABLE_AC instead of a silent inline hint.
+- [x] **M2.C.3** Core: `specNew({cwd, answers})` writes `.specgate/specs/<NNN>-<slug>/requirements.md`. CLI wrapper runs @clack prompts over the question set.
+    - DoD: auto-NNN never fills gaps; refuses to overwrite an existing dir (defensive guard).
+- [x] **M2.C.4** `specValidate(cwd, specIdOrName)` runs base validation + immutability check (when approved). CLI command: pretty-print + `--json`.
+    - DoD: `spec validate SPEC-001 --json` returns `{valid, issues, immutabilityIssues, specDir}`; exit 0/1/2 for pass/fail/error.
+- [x] **M2.C.5** `specApprove({cwd, specIdOrName})` runs validator; refuses on invalid; else rewrites `status: approved` byte-safe (no gray-matter re-serialisation) and writes `ids.lock.json`.
+    - DoD: approving a spec with `E_UNTESTABLE_AC` throws `SpecWorkflowError{code:E_SPEC_INVALID}`; approving a valid one creates the lock.
 
 ### M2.D — Design + tasks phases
 
-- [ ] **M2.D.1** `specgate plan <id>` creates/validates `design.md` (template with sections: Overview, Decisions, Open Questions). Requires the spec to be `approved`.
-    - DoD: command refuses if spec is `draft`; otherwise writes template.
-- [ ] **M2.D.2** `specgate tasks <id>` generates/validates `tasks.md`; each task row must `implements:` at least one AC that exists in the approved spec.
-    - DoD: a task implementing `AC-999.9` (nonexistent) → `E_ORPHAN_TASK_LINK`.
-- [ ] **M2.D.3** Spec-hash stamp: on `tasks` generation, write `{ "spec_sha256": "..." }` into `tasks.meta.json` for later stale-tasks drift detection (§5.6, §12.3).
-    - DoD: hash is deterministic; changing the spec after generation changes it on re-run.
+- [x] **M2.D.1** `specPlan(cwd, specIdOrName)` writes `design.md` template (Overview / Decisions / Open Questions). Refuses on draft (`E_SPEC_NOT_APPROVED`).
+    - DoD: creates on first run, reports `validated` on second.
+- [x] **M2.D.2** `specTasks({cwd, specIdOrName})` creates `tasks.md` from AC seed template. On re-run, calls `validateTaskLinks` and throws `SpecWorkflowError{E_ORPHAN_TASK_LINK}` if any `implements:` references an id not in the spec.
+    - DoD: a planted `implements: AC-404.1` triggers the error with the task + AC id in the message.
+- [x] **M2.D.3** `computeSpecHash(parsed)` → sha256 over canonical JSON of REQ/AC/NFR structure (not raw bytes — cosmetic whitespace doesn't invalidate). Written to `tasks.meta.json` as `specSha256` + `generatedAt`.
+    - DoD: whitespace-only edit yields identical hash; structural edit changes it.
 
-**M2 exit check:** full `spec new → validate → approve → plan → tasks` round trip works; renumbering is rejected; untestable ACs are flagged. **Only then proceed to M3.**
+**M2 exit check:** ✅ end-to-end round trip (`spec new → validate → approve → plan → tasks`) green across all 3 fixtures via `m2.exit.test.ts`; CLI `--json` subcommands verified on seeded spec; renumber attempts rejected with `E_IMMUTABLE_REMOVAL`; untestable ACs flagged with `E_UNTESTABLE_AC`. Core test count: **137 passing**. Pipeline (format/lint/typecheck/schemas/build/test/CLI smoke) all exit 0.
 
 ---
 

@@ -31,12 +31,24 @@ const __dirname = dirname(__filename);
 const SCHEMAS_DIR = resolve(__dirname, '..', 'schemas');
 
 const SCHEMAS: Array<{ file: string; name: string; schema: ZodType }> = [
-  { file: 'config.schema.json', name: 'SpecGateConfig', schema: ConfigSchema as unknown as ZodType },
-  { file: 'requirements.schema.json', name: 'ParsedRequirements', schema: ParsedRequirements as unknown as ZodType },
+  {
+    file: 'config.schema.json',
+    name: 'SpecGateConfig',
+    schema: ConfigSchema as unknown as ZodType,
+  },
+  {
+    file: 'requirements.schema.json',
+    name: 'ParsedRequirements',
+    schema: ParsedRequirements as unknown as ZodType,
+  },
   { file: 'tasks.schema.json', name: 'ParsedTasks', schema: ParsedTasks as unknown as ZodType },
   { file: 'pack.schema.json', name: 'PackManifest', schema: PackManifest as unknown as ZodType },
   { file: 'gate-result.schema.json', name: 'GateResult', schema: GateResult as unknown as ZodType },
-  { file: 'stack-profile.schema.json', name: 'StackProfile', schema: StackProfile as unknown as ZodType },
+  {
+    file: 'stack-profile.schema.json',
+    name: 'StackProfile',
+    schema: StackProfile as unknown as ZodType,
+  },
 ];
 
 function sortKeysDeep(value: unknown): unknown {

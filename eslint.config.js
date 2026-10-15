@@ -16,6 +16,7 @@ export default tseslint.config(
       '**/coverage/**',
       'schemas/**',
       'pnpm-lock.yaml',
+      'fixtures/**',
     ],
   },
   ...tseslint.configs.recommended,
@@ -31,22 +32,43 @@ export default tseslint.config(
         'error',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'child_process',
+              importNames: ['exec', 'execSync'],
+              message:
+                'child_process.exec/execSync are forbidden (run.md §22.7). Use execFileSync, execFile, or execa with argument arrays.',
+            },
+            {
+              name: 'node:child_process',
+              importNames: ['exec', 'execSync'],
+              message:
+                'child_process.exec/execSync are forbidden (run.md §22.7). Use execFileSync, execFile, or execa with argument arrays.',
+            },
+          ],
+        },
+      ],
       'no-restricted-syntax': [
         'error',
         {
-          selector: "CallExpression[callee.property.name='exec']",
+          selector:
+            "CallExpression[callee.object.name='cp'][callee.property.name='exec'], CallExpression[callee.object.name='cp'][callee.property.name='execSync']",
           message:
-            'child_process.exec is forbidden (run.md §22.7). Use execa with an argument array.',
+            'child_process.exec/execSync are forbidden (run.md §22.7). Use execFileSync or execa with an argument array.',
         },
         {
-          selector: "CallExpression[callee.property.name='execSync']",
+          selector:
+            "CallExpression[callee.object.name='childProcess'][callee.property.name='exec'], CallExpression[callee.object.name='childProcess'][callee.property.name='execSync']",
           message:
-            'child_process.execSync is forbidden (run.md §22.7). Use execa with an argument array.',
+            'child_process.exec/execSync are forbidden (run.md §22.7). Use execFileSync or execa with an argument array.',
         },
         {
           selector: "Property[key.name='shell'][value.value=true]",
           message:
-            "shell: true is forbidden (run.md §22.7). Use argument arrays with explicit binaries.",
+            'shell: true is forbidden (run.md §22.7). Use argument arrays with explicit binaries.',
         },
       ],
     },
