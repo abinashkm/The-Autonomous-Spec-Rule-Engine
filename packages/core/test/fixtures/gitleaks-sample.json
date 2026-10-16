@@ -1,0 +1,42 @@
+[
+  {
+    "Description": "Generic API Key",
+    "StartLine": 12,
+    "EndLine": 12,
+    "StartColumn": 20,
+    "EndColumn": 60,
+    "Match": "api_key = \"sk-abcdefghijklmnop1234567890\"",
+    "Secret": "sk-abcdefghijklmnop1234567890",
+    "File": "src/config.js",
+    "SymlinkFile": "",
+    "Commit": "",
+    "Entropy": 3.9,
+    "Author": "",
+    "Email": "",
+    "Date": "",
+    "Message": "",
+    "Tags": [],
+    "RuleID": "generic-api-key",
+    "Fingerprint": "src/config.js:generic-api-key:12"
+  },
+  {
+    "Description": "AWS Access Key",
+    "StartLine": 2,
+    "EndLine": 2,
+    "StartColumn": 1,
+    "EndColumn": 42,
+    "Match": "AKIAABCDEFGHIJKLMNOP",
+    "Secret": "AKIAABCDEFGHIJKLMNOP",
+    "File": "src/aws.ts",
+    "SymlinkFile": "",
+    "Commit": "",
+    "Entropy": 4.1,
+    "Author": "",
+    "Email": "",
+    "Date": "",
+    "Message": "",
+    "Tags": [],
+    "RuleID": "aws-access-token",
+    "Fingerprint": "src/aws.ts:aws-access-token:2"
+  }
+]

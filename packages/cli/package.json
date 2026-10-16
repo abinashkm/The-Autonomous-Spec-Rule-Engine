@@ -22,6 +22,7 @@
   "dependencies": {
     "@clack/prompts": "^1.8.1",
     "@specgate/core": "workspace:*",
+    "@specgate/mcp": "workspace:^",
     "commander": "^15.0.0"
   }
 }

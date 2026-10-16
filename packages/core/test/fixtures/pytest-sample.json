@@ -1,0 +1,17 @@
+{
+  "summary": { "total": 2, "passed": 1, "failed": 1 },
+  "tests": [
+    {
+      "nodeid": "tests/test_smoke.py::test_health",
+      "outcome": "passed",
+      "longrepr": null,
+      "location": ["tests/test_smoke.py", 10, "test_health"]
+    },
+    {
+      "nodeid": "tests/test_smoke.py::test_broken",
+      "outcome": "failed",
+      "longrepr": "AssertionError: expected 200, got 500",
+      "location": ["tests/test_smoke.py", 25, "test_broken"]
+    }
+  ]
+}

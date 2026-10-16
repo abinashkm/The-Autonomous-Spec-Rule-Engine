@@ -1,0 +1,14 @@
+{
+  "Issues": [
+    {
+      "FromLinter": "govet",
+      "Text": "shadow: declaration of \"err\" shadows declaration",
+      "Pos": { "Filename": "/repo/main.go", "Line": 42, "Column": 2 }
+    },
+    {
+      "FromLinter": "ineffassign",
+      "Text": "ineffectual assignment to x",
+      "Pos": { "Filename": "/repo/main.go", "Line": 10, "Column": 2 }
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`renderJsonReport > matches the committed snapshot 1`] = `
+"[
+  {
+    "blocking": true,
+    "duration_ms": 0,
+    "findings": [
+      {
+        "auto_fixable": false,
+        "file": "src/config.js",
+        "fix_hint": "Move it to an environment variable and rotate the key.",
+        "id": "gitleaks.generic-api-key",
+        "line": 12,
+        "message": "Possible API key committed.",
+        "rule_ref": null,
+        "severity": "error",
+        "spec_ref": null
+      }
+    ],
+    "gate": "secrets",
+    "status": "fail",
+    "tool": {
+      "name": "gitleaks",
+      "version": "8.x"
+    }
+  },
+  {
+    "blocking": true,
+    "duration_ms": 0,
+    "findings": [],
+    "gate": "lint",
+    "status": "pass",
+    "tool": {
+      "name": "eslint",
+      "version": null
+    }
+  },
+  {
+    "blocking": false,
+    "duration_ms": 0,
+    "findings": [],
+    "gate": "tests",
+    "skipped_reason": "No test runner detected.",
+    "status": "skipped",
+    "tool": {
+      "name": "tests",
+      "version": null
+    }
+  }
+]
+"
+`;
+
+exports[`renderTerminalReport > matches the committed snapshot (color off) 1`] = `
+"SpecGate check
+
+FAIL    secrets (gitleaks)
+
+  [error] src/config.js:12
+      Problem: Possible API key committed.
+      Fix:     Move it to an environment variable and rotate the key.
+
+
+PASS    lint (eslint)
+
+SKIP    tests [non-blocking]
+  reason: No test runner detected.
+
+Summary:  1 pass  1 fail  0 warn  1 skipped  0 error
+"
+`;

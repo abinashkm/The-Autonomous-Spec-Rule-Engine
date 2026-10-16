@@ -1,0 +1,104 @@
+name: SpecGate
+description: Run SpecGate gates on a PR; upload SARIF + post a summary comment.
+author: SpecGate contributors
+branding:
+  icon: shield
+  color: blue
+
+inputs:
+  specgate-version:
+    description: 'npm version of @specgate/cli to install (defaults to the one pinned in action/package.json).'
+    required: false
+    default: '0.0.0'
+  working-directory:
+    description: 'Path to run SpecGate against. Defaults to the repo root.'
+    required: false
+    default: '.'
+  fail-on-blocking:
+    description: 'Fail the Action step on blocking findings (true/false).'
+    required: false
+    default: 'true'
+  upload-sarif:
+    description: 'Upload SARIF to GitHub code scanning (true/false).'
+    required: false
+    default: 'true'
+  comment-on-pr:
+    description: 'Post or update a SpecGate PR comment with the Markdown report.'
+    required: false
+    default: 'true'
+
+outputs:
+  blocking-failures:
+    description: 'Number of blocking failures reported.'
+    value: ${{ steps.check.outputs.blocking-failures }}
+  sarif-path:
+    description: 'Path to the generated SARIF file.'
+    value: ${{ steps.render.outputs.sarif-path }}
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install SpecGate CLI
+      shell: bash
+      run: |
+        set -euo pipefail
+        if [ "${{ inputs.specgate-version }}" = "workspace" ]; then
+          # Dev-only path: assume the repo is already built via pnpm.
+          echo "Using local workspace build."
+        else
+          npm install -g "@specgate/cli@${{ inputs.specgate-version }}"
+        fi
+
+    - name: SpecGate check (JSON)
+      id: check
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        set -o pipefail
+        specgate --json check > specgate-results.json || true
+        BLOCKING=$(node -e "const r=JSON.parse(require('fs').readFileSync('specgate-results.json','utf8'));let n=0;for(const g of r){if(g.blocking && (g.status==='fail'||g.status==='error')) n++;}console.log(n);")
+        echo "blocking-failures=$BLOCKING" >> "$GITHUB_OUTPUT"
+        echo "SpecGate: $BLOCKING blocking failure(s)."
+
+    - name: Render SARIF
+      id: render
+      if: ${{ inputs.upload-sarif == 'true' }}
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        specgate report --format sarif --output specgate.sarif
+        echo "sarif-path=${{ inputs.working-directory }}/specgate.sarif" >> "$GITHUB_OUTPUT"
+
+    - name: Upload SARIF to code scanning
+      if: ${{ inputs.upload-sarif == 'true' }}
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: ${{ steps.render.outputs.sarif-path }}
+        category: specgate
+
+    - name: Render Markdown summary
+      if: ${{ inputs.comment-on-pr == 'true' && github.event_name == 'pull_request' }}
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: specgate report --format md --output specgate-pr.md
+
+    - name: Post / update PR comment
+      if: ${{ inputs.comment-on-pr == 'true' && github.event_name == 'pull_request' }}
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        body-path: ${{ inputs.working-directory }}/specgate-pr.md
+        edit-mode: replace
+        token: ${{ github.token }}
+
+    - name: Fail on blocking
+      if: ${{ inputs.fail-on-blocking == 'true' && steps.check.outputs.blocking-failures != '0' }}
+      shell: bash
+      run: |
+        echo "::error::SpecGate reported ${{ steps.check.outputs.blocking-failures }} blocking failure(s)."
+        exit 1

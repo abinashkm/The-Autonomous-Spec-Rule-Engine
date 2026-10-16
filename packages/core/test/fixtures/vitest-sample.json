@@ -1,0 +1,25 @@
+{
+  "numFailedTests": 1,
+  "testResults": [
+    {
+      "name": "/repo/test/csv.test.ts",
+      "testResults": [
+        {
+          "ancestorTitles": ["csv export"],
+          "title": "writes a header row",
+          "fullName": "csv export > writes a header row",
+          "status": "passed",
+          "location": { "line": 10, "column": 3 }
+        },
+        {
+          "ancestorTitles": ["csv export"],
+          "title": "handles zero rows",
+          "fullName": "csv export > handles zero rows",
+          "status": "failed",
+          "failureMessages": ["AssertionError: expected 'header\\n' to be 'header\\n\\n'"],
+          "location": { "line": 22, "column": 5 }
+        }
+      ]
+    }
+  ]
+}

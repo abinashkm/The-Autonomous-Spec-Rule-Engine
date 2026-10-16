@@ -1,0 +1,72 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`renderMarkdownReport > matches the committed snapshot 1`] = `
+"# SpecGate
+
+**Summary:** 1 pass · 1 fail · 0 warn · 0 skipped · 0 error
+
+| Gate | Status | Blocking | Findings | Notes |
+|---|---|---|---|---|
+| \`secrets\` | ❌ fail | yes | 1 |  |
+| \`lint\` | ✅ pass | yes | 0 |  |
+
+### secrets — 1 finding(s)
+
+- **error** \`src/config.js:12\`
+  - **Problem:** Possible API key committed.
+  - **Fix:** Move it to an env var and rotate.
+"
+`;
+
+exports[`renderSarifReport > matches the committed snapshot 1`] = `
+"{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/schemas/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "SpecGate",
+          "informationUri": "https://specgate.dev",
+          "version": "0.0.0",
+          "rules": [
+            {
+              "id": "gitleaks.generic-api-key",
+              "name": "gitleaks.generic-api-key",
+              "shortDescription": {
+                "text": "Move it to an env var and rotate."
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "gitleaks.generic-api-key",
+          "ruleIndex": 0,
+          "level": "error",
+          "message": {
+            "text": "Possible API key committed. — Fix: Move it to an env var and rotate."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/config.js"
+                },
+                "region": {
+                  "startLine": 12
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "specgate.finding.id": "secrets:src/config.js:12:gitleaks.generic-api-key"
+          }
+        }
+      ]
+    }
+  ]
+}
+"
+`;

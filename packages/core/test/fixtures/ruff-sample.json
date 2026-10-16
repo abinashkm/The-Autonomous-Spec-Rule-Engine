@@ -1,0 +1,16 @@
+[
+  {
+    "code": "E501",
+    "message": "Line too long (123 > 100 characters)",
+    "filename": "/repo/app/main.py",
+    "location": { "row": 42, "column": 100 },
+    "fix": null
+  },
+  {
+    "code": "F401",
+    "message": "'os' imported but unused",
+    "filename": "/repo/app/main.py",
+    "location": { "row": 1, "column": 1 },
+    "fix": { "applicability": "safe" }
+  }
+]

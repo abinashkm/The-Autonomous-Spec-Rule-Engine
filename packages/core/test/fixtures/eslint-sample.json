@@ -1,0 +1,34 @@
+[
+  {
+    "filePath": "/repo/src/server.ts",
+    "messages": [
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 1,
+        "message": "'foo' is defined but never used.",
+        "line": 10,
+        "column": 7,
+        "fix": null
+      },
+      {
+        "ruleId": "no-console",
+        "severity": 2,
+        "message": "Unexpected console statement.",
+        "line": 20,
+        "column": 3
+      }
+    ]
+  },
+  {
+    "filePath": "/repo/src/app.ts",
+    "messages": [
+      {
+        "ruleId": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type.",
+        "line": 5,
+        "column": 15
+      }
+    ]
+  }
+]

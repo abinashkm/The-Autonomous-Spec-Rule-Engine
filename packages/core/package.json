@@ -24,9 +24,11 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "execa": "^10.1.1",
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.3.2",
     "mdast-util-to-string": "^4.0.0",
+    "picocolors": "^1.1.1",
     "remark-parse": "^11.0.0",
     "unified": "^11.0.5",
     "zod": "^4.6.7"
