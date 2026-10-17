@@ -179,10 +179,10 @@ scoop install specgate</pre>
         <div class="tab-body" data-tab="curl">
           <pre>
 # macOS / Linux
-curl -fsSL https://specgate.dev/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/abinashkm/The-Autonomous-Spec-Rule-Engine/main/packages/distribution/install.sh | sh
 
 # Windows (PowerShell)
-iwr -useb https://specgate.dev/install.ps1 | iex</pre>
+iwr -useb https://raw.githubusercontent.com/abinashkm/The-Autonomous-Spec-Rule-Engine/main/packages/distribution/install.ps1 | iex</pre>
         </div>
         <div class="tab-body" data-tab="action">
           <pre>
@@ -198,7 +198,7 @@ jobs:
       security-events: write
     steps:
       - uses: actions/checkout@v4
-      - uses: specgate/action@v1</pre>
+      - uses: abinashkm/The-Autonomous-Spec-Rule-Engine/packages/action@main</pre>
         </div>
       </section>
 
@@ -208,16 +208,21 @@ jobs:
         <p>
           <em
             >demo gif pending — see
-            <a href="https://github.com/specgate/specgate#readme">GitHub README</a> for the current
-            status.</em
+            <a href="https://github.com/abinashkm/The-Autonomous-Spec-Rule-Engine#readme"
+              >GitHub README</a
+            >
+            for the current status.</em
           >
         </p>
       </section>
 
       <footer>
         <p>
-          Apache-2.0 · <a href="https://github.com/specgate/specgate">GitHub</a> ·
-          <a href="https://github.com/specgate/specgate/blob/main/run.md">Design doc</a>
+          Apache-2.0 ·
+          <a href="https://github.com/abinashkm/The-Autonomous-Spec-Rule-Engine">GitHub</a> ·
+          <a href="https://github.com/abinashkm/The-Autonomous-Spec-Rule-Engine/blob/main/run.md"
+            >Design doc</a
+          >
         </p>
       </footer>
     </main>

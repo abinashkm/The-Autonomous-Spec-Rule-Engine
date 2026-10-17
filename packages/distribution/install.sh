@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # SpecGate POSIX install script.
 #
-#   curl -fsSL https://specgate.dev/install.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/abinashkm/The-Autonomous-Spec-Rule-Engine/main/packages/distribution/install.sh | sh
 #
 # What it does:
 #   1. Detect OS + arch
@@ -14,7 +14,7 @@
 
 set -eu
 
-REPO="specgate/specgate"
+REPO="abinashkm/The-Autonomous-Spec-Rule-Engine"
 VERSION="${SPECGATE_VERSION:-latest}"
 INSTALL_DIR="${SPECGATE_INSTALL_DIR:-/usr/local/bin}"
 TMP_DIR="$(mktemp -d 2>/dev/null || mktemp -d -t specgate)"

@@ -10,7 +10,7 @@ COPY . ./
 RUN npm install -g ./packages/cli && npm install -g ./packages/core
 
 FROM debian:bookworm-slim
-LABEL org.opencontainers.image.source="https://github.com/specgate/specgate"
+LABEL org.opencontainers.image.source="https://github.com/abinashkm/The-Autonomous-Spec-Rule-Engine"
 LABEL org.opencontainers.image.description="SpecGate CLI with gitleaks preinstalled"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 

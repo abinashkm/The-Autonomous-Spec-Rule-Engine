@@ -623,7 +623,7 @@ First-party pack directories (`packs/`) are empty until P1 post-MVP (`ts-node-la
 ### Clone + bootstrap
 
 ```bash
-git clone https://github.com/specgate/specgate
+git clone https://github.com/abinashkm/The-Autonomous-Spec-Rule-Engine
 cd specgate
 pnpm install --frozen-lockfile
 pnpm build
@@ -721,19 +721,19 @@ For the GitHub Action, open the GitHub release page and check "Publish this rele
 
 ## 17. Distribution channels
 
-| Channel                      | Audience                      | Setup for publisher                                                                       |
-| ---------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------- |
-| npm (`@specgate/*`)          | JS/TS devs                    | `release.yml` publishes with provenance.                                                  |
-| Standalone binaries          | Non-Node devs (Python, Go, …) | SEA built per OS in CI; checksums.txt attached to the release.                            |
-| Homebrew tap                 | macOS/Linux CLI users         | Separate `homebrew-specgate` repo; manifest substituted from `manifests/homebrew/*.tmpl`. |
-| Scoop bucket                 | Windows CLI users             | Separate `scoop-bucket` repo; manifest substituted from `manifests/scoop/*.tmpl`.         |
-| `install.sh` + `install.ps1` | curl / iwr one-liner          | Hosted at `specgate.dev/install.sh` + `install.ps1`.                                      |
-| GitHub Action                | Any GitHub repo               | `packages/action/action.yml` + Marketplace publish on first release.                      |
-| Docker image                 | CI / devcontainers            | `packages/distribution/Dockerfile` ships CLI + pinned gitleaks.                           |
-| Claude Code plugin           | Claude Code users             | `packages/plugin-claude-code/` is loaded as a plugin dir.                                 |
-| MCP server listing           | Any MCP-capable agent         | `specgate mcp` over stdio.                                                                |
-| PyPI shim (post-MVP)         | Python shops                  | `pipx install specgate` downloads the standalone binary.                                  |
-| VS Code extension (post-MVP) | Visual users                  | Thin client over `--json` output.                                                         |
+| Channel                      | Audience                      | Setup for publisher                                                                                          |
+| ---------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| npm (`@specgate/*`)          | JS/TS devs                    | `release.yml` publishes with provenance.                                                                     |
+| Standalone binaries          | Non-Node devs (Python, Go, …) | SEA built per OS in CI; checksums.txt attached to the release.                                               |
+| Homebrew tap                 | macOS/Linux CLI users         | Separate `homebrew-specgate` repo; manifest substituted from `manifests/homebrew/*.tmpl`.                    |
+| Scoop bucket                 | Windows CLI users             | Separate `scoop-bucket` repo; manifest substituted from `manifests/scoop/*.tmpl`.                            |
+| `install.sh` + `install.ps1` | curl / iwr one-liner          | Hosted at `raw.githubusercontent.com/abinashkm/The-Autonomous-Spec-Rule-Engine/main/packages/distribution/`. |
+| GitHub Action                | Any GitHub repo               | `packages/action/action.yml` + Marketplace publish on first release.                                         |
+| Docker image                 | CI / devcontainers            | `packages/distribution/Dockerfile` ships CLI + pinned gitleaks.                                              |
+| Claude Code plugin           | Claude Code users             | `packages/plugin-claude-code/` is loaded as a plugin dir.                                                    |
+| MCP server listing           | Any MCP-capable agent         | `specgate mcp` over stdio.                                                                                   |
+| PyPI shim (post-MVP)         | Python shops                  | `pipx install specgate` downloads the standalone binary.                                                     |
+| VS Code extension (post-MVP) | Visual users                  | Thin client over `--json` output.                                                                            |
 
 See [run.md §24](../run.md#24-distribution--installation) for the adoption-ladder narrative.
 

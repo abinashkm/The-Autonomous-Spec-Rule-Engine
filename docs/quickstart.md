@@ -6,14 +6,14 @@ Target: from zero to a first `specgate check` in under five minutes.
 
 Pick one:
 
-| How                                   | Command                                                                                        |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| npm (JS/TS devs)                      | `npx @specgate/cli init`                                                                       |
-| Homebrew (macOS/Linux)                | `brew install specgate/tap/specgate`                                                           |
-| Scoop (Windows)                       | `scoop bucket add specgate https://github.com/specgate/scoop-bucket && scoop install specgate` |
-| curl (any POSIX)                      | `curl -fsSL https://specgate.dev/install.sh \| sh`                                             |
-| PowerShell (Windows)                  | `iwr -useb https://specgate.dev/install.ps1 \| iex`                                            |
-| GitHub Action only (no local install) | add `.github/workflows/specgate.yml` using `specgate/action@v1`                                |
+| How                                   | Command                                                                                                                               |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| npm (JS/TS devs)                      | `npx @specgate/cli init`                                                                                                              |
+| Homebrew (macOS/Linux)                | `brew install specgate/tap/specgate`                                                                                                  |
+| Scoop (Windows)                       | `scoop bucket add specgate https://github.com/specgate/scoop-bucket && scoop install specgate`                                        |
+| curl (any POSIX)                      | `curl -fsSL https://raw.githubusercontent.com/abinashkm/The-Autonomous-Spec-Rule-Engine/main/packages/distribution/install.sh \| sh`  |
+| PowerShell (Windows)                  | `iwr -useb https://raw.githubusercontent.com/abinashkm/The-Autonomous-Spec-Rule-Engine/main/packages/distribution/install.ps1 \| iex` |
+| GitHub Action only (no local install) | add `.github/workflows/specgate.yml` using `abinashkm/The-Autonomous-Spec-Rule-Engine/packages/action@main`                           |
 
 ## 1. Initialise your repo
 

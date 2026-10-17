@@ -5,11 +5,11 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/specgate/specgate.git",
+    "url": "https://github.com/abinashkm/The-Autonomous-Spec-Rule-Engine.git",
     "directory": "packages/hooks"
   },
-  "homepage": "https://specgate.dev",
-  "bugs": "https://github.com/specgate/specgate/issues",
+  "homepage": "https://github.com/abinashkm/The-Autonomous-Spec-Rule-Engine",
+  "bugs": "https://github.com/abinashkm/The-Autonomous-Spec-Rule-Engine/issues",
   "publishConfig": {
     "access": "public",
     "provenance": true

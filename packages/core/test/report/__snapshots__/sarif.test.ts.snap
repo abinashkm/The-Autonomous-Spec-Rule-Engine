@@ -27,7 +27,7 @@ exports[`renderSarifReport > matches the committed snapshot 1`] = `
       "tool": {
         "driver": {
           "name": "SpecGate",
-          "informationUri": "https://specgate.dev",
+          "informationUri": "https://github.com/abinashkm/The-Autonomous-Spec-Rule-Engine",
           "version": "0.0.0",
           "rules": [
             {

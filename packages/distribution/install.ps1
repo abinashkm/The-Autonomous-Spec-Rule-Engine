@@ -1,6 +1,6 @@
 # SpecGate Windows install script.
 #
-#   iwr -useb https://specgate.dev/install.ps1 | iex
+#   iwr -useb https://raw.githubusercontent.com/abinashkm/The-Autonomous-Spec-Rule-Engine/main/packages/distribution/install.ps1 | iex
 #
 # What it does:
 #   1. Detect arch (x64 only today).
@@ -14,7 +14,7 @@
 param()
 $ErrorActionPreference = 'Stop'
 
-$repo = 'specgate/specgate'
+$repo = 'abinashkm/The-Autonomous-Spec-Rule-Engine'
 $version = if ($env:SPECGATE_VERSION) { $env:SPECGATE_VERSION } else { 'latest' }
 $installDir = if ($env:SPECGATE_INSTALL_DIR) { $env:SPECGATE_INSTALL_DIR } else { Join-Path $env:LOCALAPPDATA 'specgate' }
 

@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "description": "SpecGate: spec before code, rules while coding, gates before merge.",
   "author": "SpecGate contributors",
-  "homepage": "https://specgate.dev",
-  "repository": "https://github.com/specgate/specgate",
+  "homepage": "https://github.com/abinashkm/The-Autonomous-Spec-Rule-Engine",
+  "repository": "https://github.com/abinashkm/The-Autonomous-Spec-Rule-Engine",
   "license": "Apache-2.0",
   "requires": {
     "specgate": ">=0.0.0"

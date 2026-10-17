@@ -82,7 +82,7 @@ export function renderSarifReport(
         tool: {
           driver: {
             name: 'SpecGate',
-            informationUri: 'https://specgate.dev',
+            informationUri: 'https://github.com/abinashkm/The-Autonomous-Spec-Rule-Engine',
             version: options.toolVersion ?? '0.0.0',
             rules,
           },

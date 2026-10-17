@@ -72,7 +72,7 @@ function main(): void {
       unknown
     >;
     jsonSchema.title = entry.name;
-    jsonSchema.$id = `https://specgate.dev/schemas/${entry.file}`;
+    jsonSchema.$id = `https://raw.githubusercontent.com/abinashkm/The-Autonomous-Spec-Rule-Engine/main/schemas/${entry.file}`;
     const sorted = sortKeysDeep(jsonSchema);
     const out = JSON.stringify(sorted, null, 2) + '\n';
     const outPath = join(SCHEMAS_DIR, entry.file);

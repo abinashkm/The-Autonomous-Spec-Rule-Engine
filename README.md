@@ -2,7 +2,7 @@
 
 > CLI-first, local-first guardrails for AI coding agents: **spec before code, rules while coding, gates before merge.**
 
-[![ci](https://github.com/specgate/specgate/actions/workflows/ci.yml/badge.svg)](https://github.com/specgate/specgate/actions/workflows/ci.yml)
+[![ci](https://github.com/abinashkm/The-Autonomous-Spec-Rule-Engine/actions/workflows/ci.yml/badge.svg)](https://github.com/abinashkm/The-Autonomous-Spec-Rule-Engine/actions/workflows/ci.yml)
 [![license: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
 **One-line:** SpecGate makes AI coding agents build what you specified, the way your project requires, and proves it before the code merges.
@@ -75,7 +75,7 @@ jobs:
       security-events: write
     steps:
       - uses: actions/checkout@v4
-      - uses: specgate/action@v1
+      - uses: abinashkm/The-Autonomous-Spec-Rule-Engine/packages/action@main
 ```
 
 PR comments + SARIF code-scanning annotations arrive automatically. **Zero-risk trial.**
@@ -87,10 +87,10 @@ PR comments + SARIF code-scanning annotations arrive automatically. **Zero-risk 
 npx @specgate/cli init
 
 # macOS / Linux
-curl -fsSL https://specgate.dev/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/abinashkm/The-Autonomous-Spec-Rule-Engine/main/packages/distribution/install.sh | sh
 
 # Windows (PowerShell)
-iwr -useb https://specgate.dev/install.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/abinashkm/The-Autonomous-Spec-Rule-Engine/main/packages/distribution/install.ps1 | iex
 ```
 
 Then:
