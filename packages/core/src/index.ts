@@ -41,3 +41,6 @@ export * from './fixloop/builder.js';
 export * from './gates/tamper.js';
 export * from './mcp/tools.js';
 export * from './trace/index.js';
+export * from './init/uninstall.js';
+export * from './doctor/pinned.js';
+export * from './doctor/install.js';

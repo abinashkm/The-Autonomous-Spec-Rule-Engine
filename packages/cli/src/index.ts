@@ -19,6 +19,7 @@ import { hooksClaudeCodeCommand, hooksInstallCommand } from './commands/hooks.js
 import { commitMsgCommand } from './commands/commit-msg.js';
 import { mcpCommand } from './commands/mcp.js';
 import { statusCommand } from './commands/status.js';
+import { uninstallCommand } from './commands/uninstall.js';
 
 /**
  * SpecGate CLI entry point.
@@ -64,12 +65,14 @@ export function buildProgram(): Command {
   program
     .command('doctor')
     .description('Probe host for required/optional tools; report present/missing with hints.')
-    .option('--install', 'download pinned, checksum-verified tools (deferred to M8).', false)
-    .action(async (cmdOpts: { install?: boolean }) => {
+    .option('--install', 'download pinned, checksum-verified tools into ~/.specgate/bin', false)
+    .option('-y, --yes', 'skip the --install consent prompt', false)
+    .action(async (cmdOpts: { install?: boolean; yes?: boolean }) => {
       const globalOpts = program.opts<{ json?: boolean; cwd?: string }>();
       const code = await doctorCommand({
         cwd: resolve(globalOpts.cwd ?? process.cwd()),
         install: cmdOpts.install ?? false,
+        yes: cmdOpts.yes ?? false,
         json: globalOpts.json ?? false,
       });
       process.exit(code);
@@ -263,6 +266,22 @@ export function buildProgram(): Command {
       const code = await mcpCommand({
         cwd: resolve(globalOpts.cwd ?? process.cwd()),
         version: readVersion(),
+      });
+      process.exit(code);
+    });
+
+  program
+    .command('uninstall')
+    .description('Remove SpecGate hooks, CI file, and managed blocks (reversible).')
+    .option('-y, --yes', 'skip the confirmation prompt', false)
+    .option('--purge', 'also delete the .specgate/ directory (specs + config)', false)
+    .action(async (cmdOpts: { yes?: boolean; purge?: boolean }) => {
+      const globalOpts = program.opts<{ cwd?: string; json?: boolean }>();
+      const code = await uninstallCommand({
+        cwd: resolve(globalOpts.cwd ?? process.cwd()),
+        yes: cmdOpts.yes ?? false,
+        purge: cmdOpts.purge ?? false,
+        json: globalOpts.json ?? false,
       });
       process.exit(code);
     });

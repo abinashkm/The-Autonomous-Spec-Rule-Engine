@@ -1,0 +1,37 @@
+{
+  "name": "specgate",
+  "version": "0.0.0",
+  "description": "SpecGate: spec before code, rules while coding, gates before merge.",
+  "author": "SpecGate contributors",
+  "homepage": "https://specgate.dev",
+  "repository": "https://github.com/specgate/specgate",
+  "license": "Apache-2.0",
+  "requires": {
+    "specgate": ">=0.0.0"
+  },
+  "commands": {
+    "specgate:init": {
+      "file": "commands/init.md",
+      "description": "Detect stack, write config, inject AGENTS.md managed block."
+    },
+    "specgate:spec": {
+      "file": "commands/spec.md",
+      "description": "Launch the interview wizard to create a draft spec."
+    },
+    "specgate:check": {
+      "file": "commands/check.md",
+      "description": "Run SpecGate gates and surface the fix prompt on failure."
+    },
+    "specgate:status": {
+      "file": "commands/status.md",
+      "description": "Show the per-AC traceability matrix."
+    }
+  },
+  "hooks": "hooks/claude-code.json",
+  "mcp_servers": {
+    "specgate": {
+      "command": "specgate",
+      "args": ["mcp"]
+    }
+  }
+}

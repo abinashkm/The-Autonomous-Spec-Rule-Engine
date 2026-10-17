@@ -1,9 +1,25 @@
 {
   "name": "@specgate/mcp",
   "version": "0.0.0",
-  "private": true,
   "description": "SpecGate MCP server adapter.",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/specgate/specgate.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://specgate.dev",
+  "bugs": "https://github.com/specgate/specgate/issues",
+  "keywords": [
+    "mcp",
+    "ai",
+    "agents",
+    "spec"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

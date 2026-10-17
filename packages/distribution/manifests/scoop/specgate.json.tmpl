@@ -1,0 +1,21 @@
+{
+  "version": "__VERSION__",
+  "description": "SpecGate: spec before code, rules while coding, gates before merge — for AI agents.",
+  "homepage": "https://specgate.dev",
+  "license": "Apache-2.0",
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/specgate/specgate/releases/download/v__VERSION__/specgate-win32-x64.exe",
+      "hash": "__SHA256_WIN32_X64__",
+      "bin": [["specgate-win32-x64.exe", "specgate"]]
+    }
+  },
+  "checkver": "github",
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://github.com/specgate/specgate/releases/download/v$version/specgate-win32-x64.exe"
+      }
+    }
+  }
+}

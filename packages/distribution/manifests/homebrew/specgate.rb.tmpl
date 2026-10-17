@@ -1,0 +1,35 @@
+# Homebrew formula template for the SpecGate CLI.
+# The release pipeline substitutes `__VERSION__` and the per-arch SHA-256 values.
+class Specgate < Formula
+  desc "Spec before code, rules while coding, gates before merge — for AI agents"
+  homepage "https://specgate.dev"
+  version "__VERSION__"
+  license "Apache-2.0"
+
+  if OS.mac?
+    if Hardware::CPU.arm?
+      url "https://github.com/specgate/specgate/releases/download/v#{version}/specgate-darwin-arm64"
+      sha256 "__SHA256_DARWIN_ARM64__"
+    else
+      url "https://github.com/specgate/specgate/releases/download/v#{version}/specgate-darwin-x64"
+      sha256 "__SHA256_DARWIN_X64__"
+    end
+  elsif OS.linux?
+    if Hardware::CPU.arm?
+      url "https://github.com/specgate/specgate/releases/download/v#{version}/specgate-linux-arm64"
+      sha256 "__SHA256_LINUX_ARM64__"
+    else
+      url "https://github.com/specgate/specgate/releases/download/v#{version}/specgate-linux-x64"
+      sha256 "__SHA256_LINUX_X64__"
+    end
+  end
+
+  def install
+    bin.install Dir["specgate-*"].first => "specgate"
+    bin.install_symlink "specgate" => "sg"
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/specgate --version")
+  end
+end

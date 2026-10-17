@@ -161,9 +161,7 @@ export async function buildTraceabilityIndex(
   for (const ac of Object.values(acs)) {
     ac.tasks = [...new Set(ac.tasks)].sort();
     ac.commits = [...new Set(ac.commits)].sort();
-    ac.tests = [...ac.tests].sort(
-      (a, b) => a.file.localeCompare(b.file) || a.line - b.line,
-    );
+    ac.tests = [...ac.tests].sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line);
   }
 
   return { reqs, acs, tasks, orphans };

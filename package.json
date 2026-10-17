@@ -17,13 +17,17 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "schemas": "tsx scripts/gen-schemas.ts",
-    "clean": "pnpm -r exec rm -rf dist .turbo *.tsbuildinfo"
+    "clean": "pnpm -r exec rm -rf dist .turbo *.tsbuildinfo",
+    "changeset": "changeset",
+    "release:version": "changeset version",
+    "release:publish": "pnpm build && changeset publish"
   },
   "workspaces": [
     "packages/*",
     "packs/*"
   ],
   "devDependencies": {
+    "@changesets/cli": "^3.0.3",
     "@types/node": "20",
     "@typescript-eslint/eslint-plugin": "^8.71.2",
     "@typescript-eslint/parser": "^8.71.2",

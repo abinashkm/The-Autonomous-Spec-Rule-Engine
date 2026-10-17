@@ -1,9 +1,26 @@
 {
   "name": "@specgate/cli",
   "version": "0.0.0",
-  "private": true,
   "description": "SpecGate CLI (specgate / sg).",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/specgate/specgate.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://specgate.dev",
+  "bugs": "https://github.com/specgate/specgate/issues",
+  "keywords": [
+    "ai",
+    "agents",
+    "code-review",
+    "cli",
+    "spec"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "type": "module",
   "bin": {
     "specgate": "./dist/index.js",
