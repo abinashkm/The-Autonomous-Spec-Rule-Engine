@@ -1,6 +1,6 @@
 {
   "name": "@specgate/cli",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "SpecGate CLI (specgate / sg).",
   "license": "Apache-2.0",
   "repository": {
