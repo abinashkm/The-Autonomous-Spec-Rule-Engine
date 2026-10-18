@@ -29,7 +29,10 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          # @changesets/cli@3.0.3's bin.js calls `module.enableCompileCache()`,
+          # a Node 22.8+ API. Node 20 throws `TypeError: enableCompileCache is
+          # not a function` before changesets can run.
+          node-version: '22'
           cache: pnpm
           registry-url: 'https://registry.npmjs.org'
 

@@ -44,9 +44,6 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Typecheck
-        run: pnpm typecheck
-
       - name: Regenerate JSON schemas
         run: pnpm schemas
 
@@ -58,8 +55,14 @@ jobs:
             exit 1
           fi
 
+      # Build before Typecheck: workspace packages consume each other through
+      # built declarations (`"types": "./dist/index.d.ts"`), so `tsc --noEmit`
+      # in @specgate/mcp/cli needs @specgate/core/dist to exist first.
       - name: Build
         run: pnpm build
+
+      - name: Typecheck
+        run: pnpm typecheck
 
       - name: Test
         run: pnpm test
