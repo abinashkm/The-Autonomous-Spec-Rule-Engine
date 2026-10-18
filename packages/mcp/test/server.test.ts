@@ -79,9 +79,11 @@ async function talkToServer(
   for (const req of requests) {
     child.stdin!.write(JSON.stringify(req) + '\n');
   }
-  // Wait at most ~6 s for all expected replies.
+  // Wait up to ~20 s for all expected replies. Cold Node startup under
+  // parallel vitest load (and CI runners) can push the stdio server's first
+  // response well past the few-hundred-millisecond warm case.
   const timeout = new Promise<void>((_, reject) => {
-    setTimeout(() => reject(new Error('timeout waiting for MCP responses')), 6_000);
+    setTimeout(() => reject(new Error('timeout waiting for MCP responses')), 20_000);
   });
   try {
     await Promise.race([done, timeout]);
