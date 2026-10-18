@@ -1,6 +1,6 @@
 {
   "name": "@specgate/hooks",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "SpecGate agent + git hook installers and runtime shims.",
   "license": "Apache-2.0",
   "repository": {

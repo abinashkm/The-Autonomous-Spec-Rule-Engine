@@ -1,6 +1,6 @@
 {
   "name": "@specgate/core",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "SpecGate core library — all logic (stack detect, spec engine, rule engine, gate runner, trace, drift, fix-loop, report).",
   "license": "Apache-2.0",
   "repository": {
